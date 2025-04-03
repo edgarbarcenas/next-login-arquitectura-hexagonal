@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migrate": "npx prisma migrate dev --name init --schema=./src/app/infrastructure/database/prisma/schema.prisma",
+    "generate": "npx prisma generate dev --name init --schema=./src/app/infrastructure/database/prisma/schema.prisma"
   },
   "prisma": {
     "schema": "src/app/infrastructure/database/prisma/schema.prisma"
