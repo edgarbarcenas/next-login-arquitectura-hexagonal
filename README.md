@@ -96,6 +96,10 @@ La aplicación estará disponible en `http://localhost:3000` 🚀
 
 ---
 
+## ENV
+- **NEXTAUTH_SECRET**
+- **POSTGRES_URL_NON_POOLING**
+
 ## 🎯 Funcionalidades Implementadas
 - **Login de usuarios** con credenciales.
 - **Persistencia de sesión** utilizando `next-auth`.
