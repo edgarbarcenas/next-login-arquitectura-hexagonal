@@ -1,27 +1,22 @@
-import { UserRepository } from "@/app/core/domain/repositories/user/UserRepository";
-import { User } from "../../../core/domain/entities/User";
-import prisma from "../prisma/client";
+import bcrypt from "bcryptjs";
+import { User } from "@prisma/client";
 
+import prisma from "../prisma/client";
+import { UserRepository } from "@/app/core/domain/repositories/user/UserRepository";
 export class PrismaUserRepository implements UserRepository {
-  async save(user: User): Promise<void> {
-    await prisma.user.create({
+  async create(user: User): Promise<User> {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    return prisma.user.create({
       data: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
+        ...user,
+        password: hashedPassword,
       },
     });
   }
 
-  async findById(id: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { id } });
-    if (!user) return null;
-    return new User(user.id, user.name, user.email);
-  }
-
   async findByEmail(email: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) return null;
-    return new User(user.id, user.name, user.email);
+    return prisma.user.findUnique({
+      where: { email },
+    });
   }
 }

@@ -1,15 +1,13 @@
 import { User } from "@/app/core/domain/entities/User";
 import { UserRepository } from "@/app/core/domain/repositories/user/UserRepository";
-
 export class CreateUser {
   constructor(private userRepository: UserRepository) {}
 
-  async execute(name: string, email: string): Promise<void> {
-    const existingUser = await this.userRepository.findByEmail(email);
+  async execute(userData: User): Promise<User> {
+    const existingUser = await this.userRepository.findByEmail(userData.email);
     if (existingUser) {
-      throw new Error("User already exists with this email");
+      throw new Error("Email already exists");
     }
-    const user = new User(Date.now().toString(), name, email);
-    await this.userRepository.save(user);
+    return this.userRepository.create(userData);
   }
 }
